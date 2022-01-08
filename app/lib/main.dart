@@ -3,6 +3,7 @@
 
 import 'package:auctionapp/api/model/KamcoPbctCltrList.dart';
 import 'package:auctionapp/api/openapi-test.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 class TestItemListPage extends StatelessWidget {
@@ -17,14 +18,28 @@ class TestItemListPage extends StatelessWidget {
         return ListView.builder(
           itemBuilder: (context, index) {
             var e = snapshot.data[index];
-            return Card(
-              child: Column(
-                children: [
-                  if (e.CLTR_IMG_FILES() != null)
-                    Image.network(e.CLTR_IMG_FILES().first),
-                  Text(e.NMRD_ADRS() ?? ''),
-                ],
-              ),
+            return Column(
+              children: [
+                if (e.CLTR_IMG_FILES() != null)
+                  Container(
+                      child: CarouselSlider(
+                    options: CarouselOptions(
+                      aspectRatio: 2.0,
+                      enlargeCenterPage: true,
+                      scrollDirection: Axis.vertical,
+                    ),
+                    items: e
+                        .CLTR_IMG_FILES()
+                        .map((item) => Image.network(
+                              item,
+                              fit: BoxFit.cover,
+                            ))
+                        .toList(),
+                  )),
+                Text(e.CLTR_MNMT_NO() ?? ''),
+                Text(e.DPSL_MTD_NM() ?? ''),
+                Text(e.NMRD_ADRS() ?? ''),
+              ],
             );
           },
           itemCount: snapshot.data.length,
