@@ -113,6 +113,6 @@ dependencies {
     // implementation 'androidx.core:core:1.0.1'
 }
 
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
+// apply plugin: 'com.google.gms.google-services'
+// apply plugin: 'com.google.firebase.crashlytics'
 //apply plugin: 'io.fabric'
