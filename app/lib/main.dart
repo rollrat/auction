@@ -22,7 +22,7 @@ class TestItemListPage extends StatelessWidget {
                 children: [
                   if (e.CLTR_IMG_FILES() != null)
                     Image.network(e.CLTR_IMG_FILES().first),
-                  Text(e.NMRD_ADRS()),
+                  Text(e.NMRD_ADRS() ?? ''),
                 ],
               ),
             );
