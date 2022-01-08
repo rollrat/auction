@@ -46,7 +46,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ipa-build
-          path: Payload.ipa
+          path: app/Payload.ipa
 
   android-build:
     runs-on: ubuntu-latest
@@ -73,4 +73,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: apk-build
-          path: ./build/app/outputs/apk/release/app-release.apk
+          path: ./app/build/app/outputs/apk/release/app-release.apk
