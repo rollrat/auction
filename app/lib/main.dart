@@ -6,6 +6,31 @@ import 'package:auctionapp/api/openapi-test.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
+class ItemImageSlider extends StatefulWidget {
+  final List<String> urls;
+
+  const ItemImageSlider(this.urls, {Key key}) : super(key: key);
+
+  @override
+  _ItemImageSliderState createState() => _ItemImageSliderState();
+}
+
+class _ItemImageSliderState extends State<ItemImageSlider> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: CarouselSlider(
+      options: CarouselOptions(),
+      items: widget.urls
+          .map((item) => Image.network(
+                item,
+                fit: BoxFit.cover,
+              ))
+          .toList(),
+    ));
+  }
+}
+
 class TestItemListPage extends StatelessWidget {
   const TestItemListPage({Key key}) : super(key: key);
 
@@ -19,26 +44,29 @@ class TestItemListPage extends StatelessWidget {
           itemBuilder: (context, index) {
             var e = snapshot.data[index];
             return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 if (e.CLTR_IMG_FILES() != null)
-                  Container(
-                      child: CarouselSlider(
-                    options: CarouselOptions(
-                      aspectRatio: 2.0,
-                      enlargeCenterPage: true,
-                      scrollDirection: Axis.vertical,
-                    ),
-                    items: e
-                        .CLTR_IMG_FILES()
-                        .map((item) => Image.network(
-                              item,
-                              fit: BoxFit.cover,
-                            ))
-                        .toList(),
-                  )),
-                Text(e.CLTR_MNMT_NO() ?? ''),
-                Text(e.DPSL_MTD_NM() ?? ''),
-                Text(e.NMRD_ADRS() ?? ''),
+                  ItemImageSlider(e.CLTR_IMG_FILES()),
+                Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        '물건관리번호: ' + (e.CLTR_MNMT_NO() ?? ''),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        '처분방식: ' + (e.DPSL_MTD_NM() ?? ''),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        '소재지: ' + (e.NMRD_ADRS() ?? ''),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
               ],
             );
           },
