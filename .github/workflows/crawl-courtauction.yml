@@ -15,6 +15,7 @@ jobs:
           node-version: '14'
       - name: Install
         run: |
+          cd crawler
           npm install
       - name: Run
         run: |
