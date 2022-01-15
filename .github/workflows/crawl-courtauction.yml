@@ -1,0 +1,29 @@
+name: Crawl CourtAuction
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ios-build:
+    runs-on: macos-latest
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: master
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Install
+        run: |
+          npm install
+      - name: Run
+        run: |
+          cd crawler
+          nodejs courtauction.js
+          nodejs courtauction-runparam.js > a.txt
+      - name: Upload IPA
+        uses: actions/upload-artifact@v2
+        with:
+          name: crawling-result
+          path: crawler/a.txt
