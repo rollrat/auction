@@ -25,10 +25,12 @@ function delay(time) {
 
   var courtIndex = 0;
   // var maxCourtCount = 59;
-  var maxCourtCount = 3;
+  var maxCourtCount = 59;
   var results = [];
 
   while (true) {
+    console.log(`[Court] ${courtIndex + 1}/${maxCourtCount}`);
+
     // 물건상세검색 페이지
     await frame.evaluate(() =>
       porActSubmit("", "InitMulSrch.laf", "", "PNO102001")
@@ -51,9 +53,11 @@ function delay(time) {
     // 검색 클릭
     await frame.evaluate(() => srch());
 
-    var pageCount = 1;
+    var pageCount = 59;
 
     while (true) {
+      console.log(`[Court-Page] ${pageCount}`);
+
       await frame.waitForSelector(".Ltbl_list");
 
       var ll = await frame.$$(".Ltbl_list tbody tr");
@@ -123,13 +127,13 @@ function delay(time) {
           var 감정평가액 = await getSubNodeTexts((await ll[i].$$("td"))[5]);
           var 진행상태 = await getSubNodeTexts((await ll[i].$$("td"))[6]);
 
-          console.log(scriptParams);
-          console.log(사건번호);
-          console.log(물건번호);
-          console.log(소재지);
-          console.log(비고);
-          console.log(감정평가액);
-          console.log(진행상태);
+          // console.log(scriptParams);
+          // console.log(사건번호);
+          // console.log(물건번호);
+          // console.log(소재지);
+          // console.log(비고);
+          // console.log(감정평가액);
+          // console.log(진행상태);
 
           results.push({
             param: scriptParams,
@@ -156,7 +160,7 @@ function delay(time) {
 
     courtIndex += 1;
 
-    if (maxCourtCount < courtIndex) break;
+    if (maxCourtCount <= courtIndex) break;
 
     await delay(500);
   }
