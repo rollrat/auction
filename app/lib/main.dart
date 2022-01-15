@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 class ItemImageSlider extends StatefulWidget {
   final List<String> urls;
 
-  const ItemImageSlider(this.urls, {Key key}) : super(key: key);
+  const ItemImageSlider(this.urls, {Key? key}) : super(key: key);
 
   @override
   _ItemImageSliderState createState() => _ItemImageSliderState();
@@ -32,7 +32,7 @@ class _ItemImageSliderState extends State<ItemImageSlider> {
 }
 
 class TestItemListPage extends StatelessWidget {
-  const TestItemListPage({Key key}) : super(key: key);
+  const TestItemListPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,12 +42,12 @@ class TestItemListPage extends StatelessWidget {
         if (!snapshot.hasData) return Container();
         return ListView.builder(
           itemBuilder: (context, index) {
-            var e = snapshot.data[index];
+            var e = snapshot.data![index];
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 if (e.CLTR_IMG_FILES() != null)
-                  ItemImageSlider(e.CLTR_IMG_FILES()),
+                  ItemImageSlider(e.CLTR_IMG_FILES() ?? <String>[]),
                 Container(
                   padding: EdgeInsets.all(8.0),
                   child: Column(
@@ -70,7 +70,7 @@ class TestItemListPage extends StatelessWidget {
               ],
             );
           },
-          itemCount: snapshot.data.length,
+          itemCount: snapshot.data!.length,
         );
       },
     );
@@ -78,7 +78,7 @@ class TestItemListPage extends StatelessWidget {
 }
 
 class MainPage extends StatefulWidget {
-  const MainPage({Key key}) : super(key: key);
+  const MainPage({Key? key}) : super(key: key);
 
   @override
   _MainPageState createState() => _MainPageState();
