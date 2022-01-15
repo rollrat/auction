@@ -19,8 +19,8 @@ jobs:
       - name: Run
         run: |
           cd crawler
-          nodejs courtauction.js
-          nodejs courtauction-runparam.js > a.txt
+          node courtauction.js
+          node courtauction-runparam.js > a.txt
       - name: Upload IPA
         uses: actions/upload-artifact@v2
         with:
