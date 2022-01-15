@@ -4,9 +4,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  ios-build:
-    runs-on: macos-latest
-    if: "!contains(github.event.head_commit.message, 'ci skip')"
+  crawling:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
