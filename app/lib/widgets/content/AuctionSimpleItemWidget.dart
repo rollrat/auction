@@ -5,6 +5,7 @@ import 'package:auctionapp/api/model/CourtAuctionDetailSrch.dart';
 import 'package:auctionapp/settings/settings.dart';
 import 'package:auctionapp/widgets/content/DotIndicator.dart';
 import 'package:auctionapp/widgets/style/GroupItemStyle.dart';
+import 'package:auctionapp/widgets/style/ScaleTranstionPressAnimationWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -36,43 +37,35 @@ class AuctionSimpleItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _buildGroup(item.eventNumber()),
-        GroupItemStyle(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    final groupItem = GroupItemStyle(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Stack(
             children: [
-              Stack(
-                children: [
-                  item.thumbnail() != null
-                      ? Image.network(item.thumbnail()!)
-                      : Container(),
-                  // Positioned(
-                  //   top: 8.0,
-                  //   left: 0.0,
-                  //   child: Container(
-                  //     color: Colors.black.withOpacity(0.5),
-                  //     child: Text('   ' + (item.EVENT_NO() ?? '') + ' ',
-                  //         style: TextStyle(
-                  //           color: Colors.white,
-                  //           fontSize: 20.0,
-                  //         )),
-                  //   ),
-                  // ),
-                ],
-              ),
-              // DotsIndicator(
-              //   itemCount: 3,
-              //   controller: _controller,
-              //   onPageSelected: (page) {},
-              // ),
-              Container(
-                padding: EdgeInsets.all(8.0),
-                child: _GroupItemBody(item),
-              ),
+              item.thumbnail() != null
+                  ? Hero(
+                      tag: item.thumbnail()!,
+                      child: Image.network(item.thumbnail()!))
+                  : Container(),
             ],
           ),
+          Container(
+            padding: EdgeInsets.all(8.0),
+            child: _GroupItemBody(item),
+          ),
+        ],
+      ),
+    );
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        _buildGroup(item.eventNumber()),
+        ScaleTranstionPressAnimationWidget(
+          child: groupItem,
+          onTap: () {},
         ),
       ],
     );
