@@ -1,35 +1,36 @@
 // This source code is a part of Auction App.
 // Copyright (C) 2022. rollrat. Licensed under the Apache-2.0 License.
 
-import 'package:auctionapp/api/model/KamcoPbctCltrList.dart';
-import 'package:auctionapp/api/openapi-test.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:auctionapp/api/courtauction-test.dart';
+import 'package:auctionapp/api/model/CourtAuctionDetailSrch.dart';
 import 'package:flutter/material.dart';
 
-class ItemImageSlider extends StatefulWidget {
-  final List<String> urls;
+import 'widgets/content/AuctionSimpleItemWidget.dart';
 
-  const ItemImageSlider(this.urls, {Key? key}) : super(key: key);
+// class ItemImageSlider extends StatefulWidget {
+//   final List<String> urls;
 
-  @override
-  _ItemImageSliderState createState() => _ItemImageSliderState();
-}
+//   const ItemImageSlider(this.urls, {Key? key}) : super(key: key);
 
-class _ItemImageSliderState extends State<ItemImageSlider> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        child: CarouselSlider(
-      options: CarouselOptions(),
-      items: widget.urls
-          .map((item) => Image.network(
-                item,
-                fit: BoxFit.cover,
-              ))
-          .toList(),
-    ));
-  }
-}
+//   @override
+//   _ItemImageSliderState createState() => _ItemImageSliderState();
+// }
+
+// class _ItemImageSliderState extends State<ItemImageSlider> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//         child: CarouselSlider(
+//       options: CarouselOptions(),
+//       items: widget.urls
+//           .map((item) => Image.network(
+//                 item,
+//                 fit: BoxFit.cover,
+//               ))
+//           .toList(),
+//     ));
+//   }
+// }
 
 class TestItemListPage extends StatelessWidget {
   const TestItemListPage({Key? key}) : super(key: key);
@@ -37,39 +38,12 @@ class TestItemListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: OepnApiTest.testGetKamcoPbctCltrList(),
-      builder: (context, AsyncSnapshot<List<KamcoPbctCltrList>> snapshot) {
+      future: CourtAuctionTest.testGetCourtAuctionDetailSrchList(),
+      builder: (context, AsyncSnapshot<List<CourtAuctionDetailSrch>> snapshot) {
         if (!snapshot.hasData) return Container();
         return ListView.builder(
-          itemBuilder: (context, index) {
-            var e = snapshot.data![index];
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                if (e.CLTR_IMG_FILES() != null)
-                  ItemImageSlider(e.CLTR_IMG_FILES() ?? <String>[]),
-                Container(
-                  padding: EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        '물건관리번호: ' + (e.CLTR_MNMT_NO() ?? ''),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                        '처분방식: ' + (e.DPSL_MTD_NM() ?? ''),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                        '소재지: ' + (e.NMRD_ADRS() ?? ''),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            );
-          },
+          itemBuilder: (context, index) =>
+              AuctionSimpleItemWidget(snapshot.data![index]),
           itemCount: snapshot.data!.length,
         );
       },

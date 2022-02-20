@@ -1,15 +1,15 @@
 // This source code is a part of Auction App.
 // Copyright (C) 2022. rollrat. Licensed under the Apache-2.0 License.
 
-import 'package:auctionapp/api/model/CourtAuctionHeaderItem.dart';
+import 'package:auctionapp/api/model/CourtAuctionDetailSrch.dart';
 import 'package:auctionapp/settings/settings.dart';
 import 'package:auctionapp/widgets/content/DotIndicator.dart';
 import 'package:auctionapp/widgets/style/GroupItemStyle.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 
 class AuctionSimpleItemWidget extends StatelessWidget {
-  final CourtAuctionHeaderItem item;
+  final CourtAuctionDetailSrch item;
   final PageController _controller = PageController(
     initialPage: 0,
   );
@@ -38,14 +38,14 @@ class AuctionSimpleItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _buildGroup(item.EVENT_NO() ?? ''),
+        _buildGroup(item.eventNumber()),
         GroupItemStyle(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Stack(
                 children: [
-                  Image.network(item.THUMBNAIL() ?? ''),
+                  Image.network(item.thumbnail()),
                   // Positioned(
                   //   top: 8.0,
                   //   left: 0.0,
@@ -78,7 +78,8 @@ class AuctionSimpleItemWidget extends StatelessWidget {
 }
 
 class _GroupItemBody extends StatelessWidget {
-  final CourtAuctionHeaderItem item;
+  final CourtAuctionDetailSrch item;
+  static DateFormat koreanFormatter = DateFormat("yyyy년 MM월 dd일");
 
   const _GroupItemBody(this.item);
 
@@ -93,7 +94,7 @@ class _GroupItemBody extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Text((item.COURT_NAME() ?? ''),
+                  Text(item.courtName(),
                       style: TextStyle(
                         fontSize: 12.0,
                         color: Colors.grey,
@@ -101,18 +102,18 @@ class _GroupItemBody extends StatelessWidget {
                 ],
               ),
               Text(
-                (item.LOCATION() ?? ''),
+                item.location(),
                 style: TextStyle(fontWeight: FontWeight.w900, fontSize: 20.0),
                 overflow: TextOverflow.ellipsis,
               ),
               Text(
-                "매각기일: " + (item.SALE_DATE() ?? ''),
+                "매각기일: " + koreanFormatter.format(item.saleDate()),
                 overflow: TextOverflow.ellipsis,
               ),
               Text(
                 "입찰가격: " +
-                    (item.MIN_SELLING_PRICE() ?? '') +
-                    "원(${((int.parse(item.MIN_SELLING_PRICE() ?? '0') / double.parse(item.APPRAISED_VALUE() ?? '1') * 100.0)).round()}%)",
+                    item.minSellingPrice().toString() +
+                    "원(${((item.minSellingPrice() / item.appraisedValue().toDouble() * 100.0)).round()}%)",
                 overflow: TextOverflow.ellipsis,
               ),
             ],
