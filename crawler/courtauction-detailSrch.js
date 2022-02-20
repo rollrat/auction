@@ -148,6 +148,14 @@ function parse_detailSrchHtml(html) {
 
         objInfo["eve"] = [eve];
       }
+
+      //
+      //  2-4. 사진 정보
+      //
+      {
+        var th = tables[2].querySelector("tr > th");
+        objInfo["photoinfo"] = printChildNodeText(th);
+      }
     }
   }
 
@@ -205,5 +213,8 @@ var completed = 0;
     });
   }
 
-  fs.writeSync(fs.openSync(`result-params.json`, "w"), JSON.stringify(results));
+  fs.writeSync(
+    fs.openSync(`result-params1.json`, "w"),
+    JSON.stringify(results)
+  );
 })();
