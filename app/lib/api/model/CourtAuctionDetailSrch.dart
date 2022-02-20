@@ -47,6 +47,6 @@ class CourtAuctionDetailSrch {
 
   /// 소재지
   String location() {
-    return result["header"]["s3"][1].toString();
+    return result["header"]["s3"][0].toString();
   }
 }

@@ -60,11 +60,11 @@ class AuctionSimpleItemWidget extends StatelessWidget {
                   // ),
                 ],
               ),
-              DotsIndicator(
-                itemCount: 3,
-                controller: _controller,
-                onPageSelected: (page) {},
-              ),
+              // DotsIndicator(
+              //   itemCount: 3,
+              //   controller: _controller,
+              //   onPageSelected: (page) {},
+              // ),
               Container(
                 padding: EdgeInsets.all(8.0),
                 child: _GroupItemBody(item),
