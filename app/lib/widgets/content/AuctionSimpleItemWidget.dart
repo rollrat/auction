@@ -101,8 +101,11 @@ class _GroupItemBody extends StatelessWidget {
                       )),
                 ],
               ),
+              Padding(
+                padding: EdgeInsets.only(top: 4.0),
+              ),
               Text(
-                item.location(),
+                item.location().split(' ').take(2).join(' '),
                 style: TextStyle(fontWeight: FontWeight.w900, fontSize: 20.0),
                 overflow: TextOverflow.ellipsis,
               ),
