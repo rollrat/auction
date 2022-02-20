@@ -77,6 +77,12 @@ class AuctionSimpleItemWidget extends StatelessWidget {
   }
 }
 
+RegExp reg = RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
+String Function(Match) mathFunc = (Match match) => '${match[1]},';
+String toStringWithComma(String value) {
+  return value.replaceAllMapped(reg, mathFunc);
+}
+
 class _GroupItemBody extends StatelessWidget {
   final CourtAuctionDetailSrch item;
   static DateFormat koreanFormatter = DateFormat("yyyy년 MM월 dd일");
@@ -115,8 +121,8 @@ class _GroupItemBody extends StatelessWidget {
               ),
               Text(
                 "입찰가격: " +
-                    item.minSellingPrice().toString() +
-                    "원(${((item.minSellingPrice() / item.appraisedValue().toDouble() * 100.0)).round()}%)",
+                    toStringWithComma(item.minSellingPrice().toString()) +
+                    "원(${toStringWithComma(((item.minSellingPrice() / item.appraisedValue().toDouble() * 100.0)).round().toString())}%)",
                 overflow: TextOverflow.ellipsis,
               ),
             ],
