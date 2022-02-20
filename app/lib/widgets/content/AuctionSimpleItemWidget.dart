@@ -46,7 +46,27 @@ class AuctionSimpleItemWidget extends StatelessWidget {
               item.thumbnail() != null
                   ? Hero(
                       tag: item.thumbnail()!,
-                      child: Image.network(item.thumbnail()!))
+                      child: Image.network(
+                        item.thumbnail()!,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child;
+                          }
+
+                          return SizedBox(
+                            height: 300.0,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            ),
+                          );
+                        },
+                      ))
                   : Container(),
             ],
           ),
