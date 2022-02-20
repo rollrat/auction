@@ -20,7 +20,8 @@ jobs:
       - name: Run
         run: |
           cd crawler
-          node courtauction-detailSrch.js > a.txt
+          mkdir result
+          node courtauction-detailSrch.js
       - name: Upload IPA
         uses: actions/upload-artifact@v2
         with:
