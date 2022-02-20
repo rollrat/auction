@@ -26,7 +26,8 @@ class CourtAuctionDetailSrch {
 
   /// 매각기일
   DateTime saleDate() {
-    return DateTime.parse(result["header"]["s6"][1].toString());
+    return DateTime.parse(
+        result["header"]["s6"][1].toString().replaceAll('.', ''));
   }
 
   /// 최저매각가격
