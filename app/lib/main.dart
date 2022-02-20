@@ -89,6 +89,7 @@ Future<void> recordFlutterError(FlutterErrorDetails flutterErrorDetails) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  FlutterError.onError = recordFlutterError;
 
   runApp(MaterialApp(
     home: MainPage(),
