@@ -8,7 +8,9 @@ class CourtAuctionDetailSrch {
   /// 사진
   List<String> photos() {
     return (result['photos'] as List<dynamic>)
-        .map((e) => (e as String).replaceAll("=T_", "="))
+        .map((e) =>
+            'https://www.courtauction.go.kr' +
+            (e as String).replaceAll("=T_", "="))
         .toList();
   }
 
