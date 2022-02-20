@@ -5,8 +5,13 @@ const request = require("request");
 const Iconv = require("iconv").Iconv;
 const jschardet = require("jschardet");
 const parser = require("node-html-parser");
+const fs = require("fs");
 
-// var ii = new iconv.Iconv("euc-kr", "utf-8");
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
 
 function anyToUtf8(str) {
   const { encoding } = jschardet.detect(str);
@@ -41,23 +46,26 @@ function doPost(options) {
   });
 }
 
-async function detailSrch(vJiwonNm, vSaNo, vMaemulSer) {
-  return await doPost({
-    uri: "https://www.courtauction.go.kr/RetrieveRealEstCarHvyMachineMulDetailInfo.laf",
-    body: encodeForm({
-      jiwonNm: anyToEUCKR(vJiwonNm),
-      saNo: encodeURI(vSaNo.trim()),
-      maemulSer: encodeURI(vMaemulSer),
+async function detailSrch(vJiwonNm, vSaNo, vMaemulSer, params) {
+  return [
+    await doPost({
+      uri: "https://www.courtauction.go.kr/RetrieveRealEstCarHvyMachineMulDetailInfo.laf",
+      body: encodeForm({
+        jiwonNm: anyToEUCKR(vJiwonNm),
+        saNo: encodeURI(vSaNo.trim()),
+        maemulSer: encodeURI(vMaemulSer),
+      }),
+      headers: {
+        "user-agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36",
+        accept:
+          "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+        "content-type": "application/x-www-form-urlencoded",
+      },
+      encoding: null,
     }),
-    headers: {
-      "user-agent":
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36",
-      accept:
-        "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-      "content-type": "application/x-www-form-urlencoded",
-    },
-    encoding: null,
-  });
+    params,
+  ];
 }
 
 function printChildNodeText(e) {
@@ -162,7 +170,40 @@ function parse_detailSrchHtml(html) {
   return objInfo;
 }
 
-detailSrch("서울중앙지방법원", " 20210130100084", "1").then((e) => {
-  //   console.log(e);
-  console.log(parse_detailSrchHtml(e));
-});
+var data = JSON.parse(fs.readFileSync("result.json"));
+const dataLen = Object.keys(data).length;
+
+var results = [];
+var completed = 0;
+
+(async () => {
+  for (var i = 0; i < dataLen; i++) {
+    if (i % 50 == 49) {
+      await sleep(5000);
+    }
+
+    var param = data[i].param;
+    detailSrch(param[0], param[1], param[2], data[i]).then((e) => {
+      var objInfo = parse_detailSrchHtml(e[0]);
+      var param = e[1].param;
+
+      objInfo["header"] = e[1];
+
+      console.log(`${++completed}/${dataLen}`);
+
+      results.push(objInfo);
+
+      fs.writeSync(
+        fs.openSync(
+          `result/result-params-${param[0]}-${param[1].trim()}-${
+            param[2]
+          }.json`,
+          "w"
+        ),
+        JSON.stringify(objInfo)
+      );
+    });
+  }
+
+  fs.writeSync(fs.openSync(`result-params.json`, "w"), JSON.stringify(results));
+})();

@@ -9,6 +9,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "puppeteer": "^13.0.1"
+    "iconv": "^3.0.1",
+    "jschardet": "^3.0.0",
+    "node-html-parser": "^5.2.0",
+    "puppeteer": "^13.0.1",
+    "request": "^2.88.2"
   }
 }
