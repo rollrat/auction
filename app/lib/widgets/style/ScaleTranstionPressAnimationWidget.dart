@@ -35,8 +35,10 @@ class _ScaleTranstionPressAnimationWidgetState
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTapDown: (detail) => _controller.animateTo(0.95),
-      onTapUp: (detail) => _controller.animateTo(1.0),
+      onTapDown: (detail) => _controller.animateTo(0.95,
+          duration: const Duration(milliseconds: 300), curve: Curves.easeInOut),
+      onTapUp: (detail) => _controller.animateTo(1.0,
+          duration: const Duration(milliseconds: 300), curve: Curves.easeInOut),
       onTap: widget.onTap,
       child: ScaleTransition(
         scale: _animation,
