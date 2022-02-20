@@ -45,7 +45,9 @@ class AuctionSimpleItemWidget extends StatelessWidget {
             children: [
               Stack(
                 children: [
-                  Image.network(item.thumbnail()),
+                  item.thumbnail() != null
+                      ? Image.network(item.thumbnail()!)
+                      : Container(),
                   // Positioned(
                   //   top: 8.0,
                   //   left: 0.0,
