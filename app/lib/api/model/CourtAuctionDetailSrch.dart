@@ -15,7 +15,7 @@ class CourtAuctionDetailSrch {
   }
 
   /// 대표사진
-  late String? _thumbnailCache;
+  String? _thumbnailCache;
   String? thumbnail() {
     if (_thumbnailCache != null) return _thumbnailCache;
     var tphotos = photos();
