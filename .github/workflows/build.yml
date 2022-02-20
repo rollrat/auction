@@ -2,9 +2,21 @@ name: Build android/ios
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
+    paths:
+      - "app/**"
+      - ".github/workflows/build.yml"
+      - "!**.md"
+      - "!**.gitignore"
+
   pull_request:
-    branches: [ master ]
+    branches: [master]
+    paths:
+      - "app/**"
+      - ".github/workflows/build.yml"
+      - "!**.md"
+      - "!**.gitignore"
+
   workflow_dispatch:
 
 jobs:
@@ -17,13 +29,13 @@ jobs:
           ref: master
       - uses: actions/setup-java@v1
         with:
-          java-version: '12.x'
+          java-version: "12.x"
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: '2.5.2'
+          flutter-version: "2.5.2"
       - uses: actions/setup-python@v2
         with:
-          python-version: '3.8'
+          python-version: "3.8"
       - name: Podfile
         run: |
           cd app
@@ -57,13 +69,13 @@ jobs:
           ref: master
       - uses: actions/setup-java@v1
         with:
-          java-version: '12.x'
+          java-version: "12.x"
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: '2.5.2'
+          flutter-version: "2.5.2"
       - uses: actions/setup-python@v2
         with:
-          python-version: '3.8'
+          python-version: "3.8"
       - name: Build
         run: |
           cd app
