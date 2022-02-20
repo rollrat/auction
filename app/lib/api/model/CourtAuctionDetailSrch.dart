@@ -20,7 +20,7 @@ class CourtAuctionDetailSrch {
     if (_thumbnailCache != null) return _thumbnailCache;
     var tphotos = photos();
     if (tphotos.length == 0) return null;
-    return _thumbnailCache = photos()[0];
+    return _thumbnailCache = tphotos[0];
   }
 
   /// 사건번호

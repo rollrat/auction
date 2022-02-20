@@ -3,8 +3,11 @@
 
 import 'package:auctionapp/api/courtauction-test.dart';
 import 'package:auctionapp/api/model/CourtAuctionDetailSrch.dart';
+import 'package:auctionapp/pages/log_page.dart';
 import 'package:flutter/material.dart';
 
+import 'log/log.dart';
+import 'other/platform_navigator.dart';
 import 'widgets/content/AuctionSimpleItemWidget.dart';
 
 // class ItemImageSlider extends StatefulWidget {
@@ -59,8 +62,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  int _count = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,12 +70,21 @@ class _MainPageState extends State<MainPage> {
       ),
       body: TestItemListPage(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => setState(() => _count++),
-        tooltip: 'Increment Counter',
-        child: const Icon(Icons.add),
+        onPressed: () {
+          PlatformNavigator.navigateSlide(context, LogPage());
+        },
+        tooltip: 'Log',
+        child: const Icon(Icons.receipt),
       ),
     );
   }
+}
+
+Future<void> recordFlutterError(FlutterErrorDetails flutterErrorDetails) async {
+  Logger.error('[unhandled-error] E: ' +
+      flutterErrorDetails.exceptionAsString() +
+      '\n' +
+      flutterErrorDetails.stack.toString());
 }
 
 void main() async {
