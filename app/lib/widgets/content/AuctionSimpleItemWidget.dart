@@ -26,7 +26,7 @@ class AuctionSimpleItemWidget extends StatelessWidget {
           Text(name,
               style: TextStyle(
                 color: Settings.isDarkTheme ? Colors.white : Colors.black87,
-                fontSize: 24.0,
+                fontSize: 16.0,
                 letterSpacing: 1.0,
                 fontWeight: FontWeight.w900,
               )),
