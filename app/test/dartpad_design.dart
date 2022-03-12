@@ -5,7 +5,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -79,8 +78,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-
-
 class CourtAuctionHeaderItem {
   Map<dynamic, dynamic> result;
   CourtAuctionHeaderItem({required this.result});
@@ -114,8 +111,6 @@ class CourtAuctionHeaderItem {
   String? COURT_NAME() => _getValueByName("COURT_NAME");
 }
 
-
-
 class CourtAuctionHeaderItemTest {
   static List<CourtAuctionHeaderItem> items = [
     CourtAuctionHeaderItem(result: {
@@ -140,8 +135,6 @@ class CourtAuctionHeaderItemTest {
     }),
   ];
 }
-
-
 
 class GroupItemStyle extends StatelessWidget {
   final Widget? child;
@@ -182,7 +175,6 @@ class GroupItemStyle extends StatelessWidget {
     );
   }
 }
-
 
 class DotsIndicator extends AnimatedWidget {
   DotsIndicator({
@@ -251,7 +243,6 @@ class DotsIndicator extends AnimatedWidget {
   }
 }
 
-
 class AuctionSimpleItemWidget extends StatelessWidget {
   final CourtAuctionHeaderItem item;
   final PageController _controller = PageController(
@@ -280,38 +271,96 @@ class AuctionSimpleItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final groupItem = GroupItemStyle(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Stack(
+            children: [
+              Image.network(item.THUMBNAIL() ?? ''),
+              // Positioned(
+              //   top: 8.0,
+              //   left: 0.0,
+              //   child: Container(
+              //     color: Colors.black.withOpacity(0.5),
+              //     child: Text('   ' + (item.EVENT_NO() ?? '') + ' ',
+              //         style: TextStyle(
+              //           color: Colors.white,
+              //           fontSize: 20.0,
+              //         )),
+              //   ),
+              // ),
+            ],
+          ),
+          Container(
+            padding: EdgeInsets.all(8.0),
+            child: _GroupItemBody(item),
+          ),
+        ],
+      ),
+    );
+
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _buildGroup(item.EVENT_NO() ?? ''),
-        GroupItemStyle(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(
-                children: [
-                  Image.network(item.THUMBNAIL() ?? ''),
-                  // Positioned(
-                  //   top: 8.0,
-                  //   left: 0.0,
-                  //   child: Container(
-                  //     color: Colors.black.withOpacity(0.5),
-                  //     child: Text('   ' + (item.EVENT_NO() ?? '') + ' ',
-                  //         style: TextStyle(
-                  //           color: Colors.white,
-                  //           fontSize: 20.0,
-                  //         )),
-                  //   ),
-                  // ),
-                ],
-              ),
-              Container(
-                padding: EdgeInsets.all(8.0),
-                child: _GroupItemBody(item),
-              ),
-            ],
+        Center(
+          child: ScaleTranstionPressAnimationWidget(
+            child: groupItem,
           ),
         ),
       ],
+    );
+  }
+}
+
+class ScaleTranstionPressAnimationWidget extends StatefulWidget {
+  final Widget child;
+
+  const ScaleTranstionPressAnimationWidget({Key? key, required this.child})
+      : super(key: key);
+
+  @override
+  _ScaleTranstionPressAnimationWidgetState createState() =>
+      _ScaleTranstionPressAnimationWidgetState();
+}
+
+class _ScaleTranstionPressAnimationWidgetState
+    extends State<ScaleTranstionPressAnimationWidget>
+    with TickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+      duration: const Duration(milliseconds: 300), vsync: this, value: 1.0);
+  late final Animation<double> _animation = CurvedAnimation(
+    parent: _controller,
+    curve: Curves.easeInOut,
+  );
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (detail) {
+        _controller.animateTo(0.95,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut);
+      },
+      onTapUp: (detail) {
+        _controller.animateTo(1.0,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut);
+      },
+      onDoubleTap: () {},
+      onTap: () {},
+      child: ScaleTransition(
+        scale: _animation,
+        child: Container(child: widget.child),
+      ),
     );
   }
 }
@@ -332,8 +381,7 @@ class _GroupItemBody extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Text(
-                      (item.COURT_NAME() ?? ''),
+                  Text((item.COURT_NAME() ?? ''),
                       style: TextStyle(
                         fontSize: 12.0,
                         color: Colors.grey,
@@ -376,4 +424,3 @@ class _GroupItemBody extends StatelessWidget {
     );
   }
 }
-
