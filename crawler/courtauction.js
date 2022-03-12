@@ -180,7 +180,7 @@ function delay(time) {
 
   //   console.log(data);
 
-  fs.writeSync(fs.openSync("result.txt", "w"), JSON.stringify(results));
+  fs.writeSync(fs.openSync("result.json", "w"), JSON.stringify(results));
 
   await browser.close();
 })();

@@ -3,11 +3,47 @@
 
 const puppeteer = require("puppeteer");
 const fs = require("fs");
+const { exit } = require("process");
+
+if (process.argv.length < 4) {
+  console.log("argument: <starts> <ends>");
+  exit();
+}
+
+var starts = parseInt(process.argv[2]);
+var ends = parseInt(process.argv[3]);
 
 function delay(time) {
   return new Promise(function (resolve) {
     setTimeout(resolve, time);
   });
+}
+
+async function showOuterHtml(element) {
+  const data = await element.evaluate((e) => e.outerHTML);
+  console.log(data);
+}
+
+async function getAttr(frame, element, attr) {
+  return await frame.evaluate((e, attr) => e.getAttribute(attr), element, attr);
+}
+
+async function getSubNodeTexts(frame, element) {
+  return await frame.evaluate((e) => {
+    function printChildNodeText(e) {
+      var texts = [];
+      for (const child of e.childNodes) {
+        if (child.nodeType === Node.TEXT_NODE) {
+          var text = child.textContent.trim();
+          if (text != "") texts.push(text);
+        } else {
+          texts.push(...printChildNodeText(child));
+        }
+      }
+      return texts;
+    }
+    return printChildNodeText(e);
+  }, element);
 }
 
 (async () => {
@@ -20,7 +56,7 @@ function delay(time) {
   });
   await frame.waitForSelector("#main_btn");
 
-  var data = JSON.parse(fs.readFileSync("result.txt"));
+  var data = JSON.parse(fs.readFileSync("result.json"));
 
   //   console.log(data);
 
@@ -31,9 +67,15 @@ function delay(time) {
 
   const dataLen = Object.keys(data).length;
 
+  console.log(dataLen);
+
   var results = [];
 
-  for (var i = 0; i < dataLen && i < 100; i++) {
+  for (var i = starts; i < dataLen && i < ends; i++) {
+    if (i % 100 == 99) {
+      await delay(1000);
+    }
+
     try {
       // await delay(1000);
       console.log("wait .Ltbl_list");
@@ -52,6 +94,8 @@ function delay(time) {
       */
 
       var objInfo = {};
+
+      objInfo["header"] = data[i];
 
       // 사건내역
       // await frame.evaluate(
@@ -74,37 +118,6 @@ function delay(time) {
         continue;
       }
 
-      async function showOuterHtml(element) {
-        const data = await element.evaluate((e) => e.outerHTML);
-        console.log(data);
-      }
-
-      async function getAttr(element, attr) {
-        return await frame.evaluate(
-          (e, attr) => e.getAttribute(attr),
-          element,
-          attr
-        );
-      }
-
-      async function getSubNodeTexts(element) {
-        return await frame.evaluate((e) => {
-          function printChildNodeText(e) {
-            var texts = [];
-            for (const child of e.childNodes) {
-              if (child.nodeType === Node.TEXT_NODE) {
-                var text = child.textContent.trim();
-                if (text != "") texts.push(text);
-              } else {
-                texts.push(...printChildNodeText(child));
-              }
-            }
-            return texts;
-          }
-          return printChildNodeText(e);
-        }, element);
-      }
-
       // const dataRaw = await frame.evaluate(
       //   () => document.querySelector("*").outerHTML
       // );
@@ -120,7 +133,9 @@ function delay(time) {
         var imgs = await frame.$$(`div#photo${k} img`);
         if (imgs.length == 0) break;
         for (var j = 0; j < imgs.length; j++) {
-          photo_urls.push((await getAttr(imgs[j], "src")).replace(/T_/gi, ""));
+          photo_urls.push(
+            (await getAttr(frame, imgs[j], "src")).replace(/T_/gi, "")
+          );
         }
       }
 
@@ -138,12 +153,12 @@ function delay(time) {
           //
           {
             var trs = await tables[0].$$("tbody > tr");
-            var t1 = await getSubNodeTexts(trs[0]); // 사건번호, 물건번호, 물건종류
-            var t2 = await getSubNodeTexts(trs[1]); // 감정평가액, 최저매각가격, 입찰방법
-            var t3 = await getSubNodeTexts(trs[2]); // 매각기일
-            var t4 = await getSubNodeTexts(trs[3]); // 물건비고
-            var t5 = await getSubNodeTexts(trs[4]); // 목록1 소재지
-            var t6 = await getSubNodeTexts(trs[5]); // 담당
+            var t1 = await getSubNodeTexts(frame, trs[0]); // 사건번호, 물건번호, 물건종류
+            var t2 = await getSubNodeTexts(frame, trs[1]); // 감정평가액, 최저매각가격, 입찰방법
+            var t3 = await getSubNodeTexts(frame, trs[2]); // 매각기일
+            var t4 = await getSubNodeTexts(frame, trs[3]); // 물건비고
+            var t5 = await getSubNodeTexts(frame, trs[4]); // 목록1 소재지
+            var t6 = await getSubNodeTexts(frame, trs[5]); // 담당
 
             objInfo["binfo1"] = [t1, t2, t3, t4, t5, t6];
           }
@@ -153,8 +168,8 @@ function delay(time) {
           //
           {
             var trs = await tables[1].$$("tbody > tr");
-            var t1 = await getSubNodeTexts(trs[0]); // 사건접수, 경매개시일
-            var t2 = await getSubNodeTexts(trs[1]); // 배당요구종기, 청구금액
+            var t1 = await getSubNodeTexts(frame, trs[0]); // 사건접수, 경매개시일
+            var t2 = await getSubNodeTexts(frame, trs[1]); // 배당요구종기, 청구금액
 
             objInfo["binfo2"] = [t1, t2];
           }
@@ -167,7 +182,7 @@ function delay(time) {
             var eve = [];
 
             for (var trsi = 0; trsi < trs.length; trsi++) {
-              eve.push(await getSubNodeTexts(trs[trsi]));
+              eve.push(await getSubNodeTexts(frame, trs[trsi]));
             }
 
             objInfo["eve"] = [eve];
@@ -185,7 +200,7 @@ function delay(time) {
         var dal = [];
 
         for (var trsi = 0; trsi < trs.length; trsi++) {
-          dal.push(await getSubNodeTexts(trs[trsi]));
+          dal.push(await getSubNodeTexts(frame, trs[trsi]));
         }
 
         objInfo["dal"] = dal;
@@ -195,10 +210,14 @@ function delay(time) {
       //  4. 목록내역
       //
 
-
       //
       //  5. 인근매각물건사례
       //
+
+      //
+      //  크롤링 데이터 삽입
+      //
+      results.push(objInfo);
 
       // 이전으로
       console.log("eval porBefSrnActSubmit");
@@ -217,7 +236,10 @@ function delay(time) {
     }
   }
 
-  fs.writeSync(fs.openSync("result-params.txt", "w"), JSON.stringify(results));
+  fs.writeSync(
+    fs.openSync(`result-params-${starts}.json`, "w"),
+    JSON.stringify(results)
+  );
 
   await browser.close();
 })();
