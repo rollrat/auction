@@ -1,10 +1,9 @@
 // This source code is a part of Project Violet.
 // Copyright (C) 2020-2022. violet-team. Licensed under the Apache-2.0 License.
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-final defaultTitle = 'Project Violet';
+const defaultTitle = 'Auction App';
 
 Future<void> showOkDialog(BuildContext context, String message,
     [String? title]) async {
@@ -27,7 +26,7 @@ Future<void> showOkDialog(BuildContext context, String message,
 
 Future<bool> showOkCancelDialog({
   required BuildContext context,
-  required String titleText,
+  String? titleText,
   String? contentText,
   WidgetBuilder? contentBuilder,
   EdgeInsetsGeometry? contentPadding,
