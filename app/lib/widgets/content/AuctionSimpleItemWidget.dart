@@ -43,31 +43,16 @@ class AuctionSimpleItemWidget extends StatelessWidget {
         children: [
           Stack(
             children: [
-              item.thumbnail() != null
-                  ? Hero(
-                      tag: item.thumbnail()!,
-                      child: Image.network(
-                        item.thumbnail()!,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) {
-                            return child;
-                          }
-
-                          return SizedBox(
-                            height: 300.0,
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes !=
-                                        null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!
-                                    : null,
-                              ),
-                            ),
-                          );
-                        },
-                      ))
-                  : Container(),
+              if (item.thumbnail() != null)
+                GridView.count(
+                  padding: EdgeInsets.zero,
+                  primary: false,
+                  crossAxisCount: 2,
+                  shrinkWrap: true,
+                  childAspectRatio: 16 / 9,
+                  children:
+                      item.photos().take(4).map((e) => _imageUnit(e)).toList(),
+                ),
             ],
           ),
           Container(
@@ -88,6 +73,30 @@ class AuctionSimpleItemWidget extends StatelessWidget {
           onTap: () {},
         ),
       ],
+    );
+  }
+
+  Widget _imageUnit(url) {
+    return Image.network(
+      url,
+      fit: BoxFit.cover,
+      loadingBuilder: (context, child, loadingProgress) {
+        if (loadingProgress == null) {
+          return child;
+        }
+
+        return SizedBox(
+          height: 300.0,
+          child: Center(
+            child: CircularProgressIndicator(
+              value: loadingProgress.expectedTotalBytes != null
+                  ? loadingProgress.cumulativeBytesLoaded /
+                      loadingProgress.expectedTotalBytes!
+                  : null,
+            ),
+          ),
+        );
+      },
     );
   }
 }
