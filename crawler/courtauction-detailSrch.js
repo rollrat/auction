@@ -17,7 +17,7 @@ function sleep(ms) {
 }
 
 (async () => {
-  for (var i = 0; i < dataLen && i < 10; i++) {
+  for (var i = 0; i < dataLen; i++) {
     if (i % 50 == 49) {
       await sleep(5000);
     }
@@ -46,7 +46,7 @@ function sleep(ms) {
   }
 
   fs.writeSync(
-    fs.openSync(`result-params1.json`, "w"),
+    fs.openSync(`result-params.json`, "w"),
     JSON.stringify(results)
   );
 })();
