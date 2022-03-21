@@ -33,6 +33,7 @@ dependencies:
   material_design_icons_flutter: 5.0.6595
   intl: ^0.17.0
   path_provider: ^2.0.9
+  flutter_naver_map:
 
 dev_dependencies:
   flutter_test:

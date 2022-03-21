@@ -41,26 +41,26 @@ class Logger {
   // Since isolates handle all asynchronous operations linearly,
   // there is no need for mutual exclusion.
   static sync.Lock lock = sync.Lock();
-  static late File logFile;
+  // static late File logFile;
   static List<LogEvent> events = <LogEvent>[];
 
   static Future<void> init() async {
     var dir = await getApplicationDocumentsDirectory();
-    logFile = File(join(dir.path, 'log.txt'));
-    if (!await logFile.exists()) {
-      await logFile.create();
-    }
+    // logFile = File(join(dir.path, 'log.txt'));
+    // if (!await logFile.exists()) {
+    //   await logFile.create();
+    // }
   }
 
   static Future<void> log(String msg) async {
     print(msg);
 
-    if (!Platform.environment.containsKey('FLUTTER_TEST')) {
-      await lock.synchronized(() async {
-        await logFile.writeAsString('[${DateTime.now().toUtc()}] ' + msg + '\n',
-            mode: FileMode.append);
-      });
-    }
+    // if (!Platform.environment.containsKey('FLUTTER_TEST')) {
+    //   await lock.synchronized(() async {
+    //     await logFile.writeAsString('[${DateTime.now().toUtc()}] ' + msg + '\n',
+    //         mode: FileMode.append);
+    //   });
+    // }
   }
 
   static Future<void> _logMessage(
@@ -98,8 +98,8 @@ class Logger {
   }
 
   static Future<void> showLogs() async {
-    (await logFile.readAsLines()).forEach((element) {
-      print(element);
-    });
+    // (await logFile.readAsLines()).forEach((element) {
+    //   print(element);
+    // });
   }
 }

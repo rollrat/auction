@@ -3,7 +3,6 @@
 
 import 'package:auctionapp/api/model/CourtAuctionDetailSrch.dart';
 import 'package:auctionapp/settings/settings.dart';
-import 'package:auctionapp/widgets/content/DotIndicator.dart';
 import 'package:auctionapp/widgets/style/GroupItemStyle.dart';
 import 'package:auctionapp/widgets/style/ScaleTranstionPressAnimationWidget.dart';
 import 'package:flutter/material.dart';
@@ -156,17 +155,41 @@ class _GroupItemBody extends StatelessWidget {
             right: 0,
             child: Row(
               children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.bookmark_border,
-                  ),
-                ),
+                _BookmarkButtonWidget(item: item),
               ],
             ),
           ),
         ],
       ),
     );
+  }
+}
+
+class _BookmarkButtonWidget extends StatefulWidget {
+  final CourtAuctionDetailSrch item;
+
+  _BookmarkButtonWidget({Key? key, required this.item}) : super(key: key);
+
+  @override
+  State<_BookmarkButtonWidget> createState() => __BookmarkButtonWidgetState();
+}
+
+class __BookmarkButtonWidgetState extends State<_BookmarkButtonWidget> {
+  bool toggle = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: _onPressed,
+      icon: Icon(
+        toggle ? Icons.bookmark : Icons.bookmark_border,
+      ),
+    );
+  }
+
+  _onPressed() {
+    setState(() {
+      toggle = !toggle;
+    });
   }
 }

@@ -3,7 +3,8 @@
 
 import 'package:auctionapp/api/courtauction-test.dart';
 import 'package:auctionapp/api/model/CourtAuctionDetailSrch.dart';
-import 'package:auctionapp/pages/log_page.dart';
+import 'package:auctionapp/pages/afterloading_page.dart';
+import 'package:auctionapp/pages/debug/log_page.dart';
 import 'package:flutter/material.dart';
 
 import 'log/log.dart';
@@ -54,31 +55,31 @@ class TestItemListPage extends StatelessWidget {
   }
 }
 
-class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
+// class MainPage extends StatefulWidget {
+//   const MainPage({Key? key}) : super(key: key);
 
-  @override
-  _MainPageState createState() => _MainPageState();
-}
+//   @override
+//   _MainPageState createState() => _MainPageState();
+// }
 
-class _MainPageState extends State<MainPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Auction Test'),
-      ),
-      body: TestItemListPage(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          PlatformNavigator.navigateSlide(context, LogPage());
-        },
-        tooltip: 'Log',
-        child: const Icon(Icons.receipt),
-      ),
-    );
-  }
-}
+// class _MainPageState extends State<MainPage> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Auction Test'),
+//       ),
+//       body: TestItemListPage(),
+//       floatingActionButton: FloatingActionButton(
+//         onPressed: () {
+//           PlatformNavigator.navigateSlide(context, LogPage());
+//         },
+//         tooltip: 'Log',
+//         child: const Icon(Icons.receipt),
+//       ),
+//     );
+//   }
+// }
 
 Future<void> recordFlutterError(FlutterErrorDetails flutterErrorDetails) async {
   Logger.error('[unhandled-error] E: ' +
@@ -92,6 +93,6 @@ void main() async {
   FlutterError.onError = recordFlutterError;
 
   runApp(MaterialApp(
-    home: MainPage(),
+    home: AfterLoadingPage(),
   ));
 }
