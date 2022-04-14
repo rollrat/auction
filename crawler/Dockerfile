@@ -1,7 +1,12 @@
 FROM ubuntu:20.04
 
 USER root
+
+ENV TZ=Asia/Dubai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 RUN apt update
+RUN apt install -y tzdata
 RUN apt install -y npm
 RUN apt install -y libatk-bridge2.0 libatk1.0-0 libcups2 libxdamage-dev libgbm 
 RUN apt install -y gconf-service libgbm-dev libasound2 libatk1.0-0 libc6 libcairo2 \
