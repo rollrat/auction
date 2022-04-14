@@ -21,6 +21,7 @@ jobs:
         run: |
           cd crawler
           mkdir result
+          node courtauction.js
           node courtauction-detailSrch.js
       - name: Upload IPA
         uses: actions/upload-artifact@v2
