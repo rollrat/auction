@@ -18,6 +18,7 @@ RUN apt install -y gconf-service libgbm-dev libasound2 libatk1.0-0 libc6 libcair
 
 COPY ./ /home/ubuntu/
 RUN ls -al /home/ubuntu/*
-RUN npm install
+RUN cd /home/ubuntu &&
+ npm install
 
 CMD ['node', 'courtauction.js']
