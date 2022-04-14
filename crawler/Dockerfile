@@ -2,6 +2,8 @@ FROM ubuntu:20.04
 
 USER root
 
+WORKDIR /home/ubuntu
+
 ENV TZ=Asia/Dubai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
@@ -15,8 +17,7 @@ RUN apt install -y gconf-service libgbm-dev libasound2 libatk1.0-0 libc6 libcair
   libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 \
   libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 \
   libnss3 lsb-release xdg-utils wget
-COPY ./ /home/ubuntu/
-RUN ls -al /home/ubuntu/*
-RUN cd /home/ubuntu && npm install
+COPY ./ .
+RUN npm install
 
 CMD ['node', 'courtauction.js']
