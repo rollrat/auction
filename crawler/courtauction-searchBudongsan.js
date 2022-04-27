@@ -1,5 +1,8 @@
+// This source code is a part of Auction App.
+// Copyright (C) 2022. rollrat. Licensed under the Apache-2.0 License.
 
 const searchBudongsan = require('./api/courtauction/searchBudongsan');
+const fs = require("fs");
 
 (async () => {
   var results = [];
