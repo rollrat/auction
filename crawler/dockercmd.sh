@@ -1,4 +1,4 @@
 #!/bin/bash
 
-node courtauction.js
+node courtauction-searchBudongsan.js
 node courtauction-detailSrch.js
