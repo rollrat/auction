@@ -27,4 +27,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: crawling-result
-          path: crawler/result-params.json
+          path: crawler/result.json
