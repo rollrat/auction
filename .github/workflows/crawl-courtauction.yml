@@ -24,7 +24,7 @@ jobs:
           node courtauction-searchBudongsan.js
           node courtauction-detailSrch.js
       - name: Upload IPA
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: crawling-result
-          path: crawler/result.json
+          path: crawler/result*
