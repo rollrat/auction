@@ -16,8 +16,11 @@ function sleep(ms) {
   for (var i = 0; i < 1000; i++) {
     try {
       var v = await searchBudongsan.searchBudongsan('전체', 1 + i * 20, null);
-      console.log(searchBudongsan.parse_searchBudongsan(v[0]));
-      results.push(searchBudongsan.parse_searchBudongsan(v[0]));
+      var x = searchBudongsan.parse_searchBudongsan(v[0]);
+      if (x == null)
+        break;
+      results.push(x);
+      console.log(i);
     } catch (e) {
       console.log(e);
       break;

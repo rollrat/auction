@@ -46,6 +46,7 @@ function parse_searchBudongsan(html) {
 
   var ll = root.querySelectorAll(`.Ltbl_list tbody tr`);
   for (var i = 0; i < ll.length; i++) {
+    if (ll[i].querySelectorAll("td")[1] === undefined) return null;
     var openScript = ll[i].querySelectorAll("td")[1].querySelector("a").attrs[
       "onclick"
     ];
