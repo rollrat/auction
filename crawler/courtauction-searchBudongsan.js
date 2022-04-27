@@ -24,18 +24,15 @@ function sleep(ms) {
     searchBudongsan.searchBudongsan('전체', 1 + i * 20, i).then((e) => {
       try {
         results[e[1]] = searchBudongsan.parse_searchBudongsan(e[0]);
-        console.log (results[e[1]]);
         complete++;
       } catch (e) {
         occurerror = true;
       }
     });
-    if (i % 5 == 4) {
-      while (!occurerror && complete == i + 1) {
-        await sleep(100);
-      }
-      if (occurerror) break;
+    while (!occurerror && complete == i + 1) {
+      await sleep(100);
     }
+    if (occurerror) break;
   }
 
 
