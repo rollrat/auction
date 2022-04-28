@@ -7,6 +7,7 @@ class CourtAuctionDetailSrch {
 
   /// 사진
   List<String> photos() {
+    if ((result['photos'] as List<dynamic>).length == 0) return [];
     return (result['photos'] as List<dynamic>)
         .map((e) =>
             'https://www.courtauction.go.kr' +

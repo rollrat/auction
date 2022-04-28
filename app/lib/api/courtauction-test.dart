@@ -15,10 +15,10 @@ class CourtAuctionTest {
 
     if (Platform.environment.containsKey('FLUTTER_TEST')) {
       var file =
-          File('/home/ubuntu/auction/app/assets/tests/test-data-0002.json');
+          File('/home/ubuntu/auction/app/assets/tests/test-data-0003.json');
       data = await file.readAsString();
     } else
-      data = await rootBundle.loadString('assets/tests/test-data-0002.json');
+      data = await rootBundle.loadString('assets/tests/test-data-0003.json');
 
     return (json.decode(data) as List<dynamic>)
         .map((e) => CourtAuctionDetailSrch(result: e))

@@ -36,13 +36,14 @@ class AuctionSimpleItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    item.photos();
     final groupItem = GroupItemStyle(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Stack(
-            children: [
-              if (item.thumbnail() != null)
+          if (item.photos().isNotEmpty)
+            Stack(
+              children: [
                 GridView.count(
                   padding: EdgeInsets.zero,
                   primary: false,
@@ -52,8 +53,8 @@ class AuctionSimpleItemWidget extends StatelessWidget {
                   children:
                       item.photos().take(4).map((e) => _imageUnit(e)).toList(),
                 ),
-            ],
-          ),
+              ],
+            ),
           Container(
             padding: EdgeInsets.all(8.0),
             child: _GroupItemBody(item),
