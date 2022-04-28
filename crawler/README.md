@@ -54,3 +54,29 @@ sudo docker start ac
 sudo docker exec -it ac /bin/bash
 sudo docker rm ac && sudo docker run -it --user root --name ac auction-crawler ~/dockercmd.sh
 ```
+
+## Dist
+
+```
+# build with wsl
+echo "export DOCKER_HOST=localhost:2375" >> ~/.bash_profile
+sudo docker login
+sudo docker build -t ca:0.1 .
+sudo docker tag ca:0.1 rollrat/ca:0.1
+sudo docker push rollrat/ca:0.1
+
+# pull
+sudo apt install docker.io
+sudo docker pull rollrat/ca:0.1
+sudo docker run --name ca -v ~/:/home/ubuntu/result rollrat/ca:0.1
+
+sudo docker start ca
+sudo docker exec -it ca /bin/bash
+
+sudo docker cp ca:/home/ubuntu/result.json ~/
+sudo docker cp ca:/home/ubuntu/result-params.json ~/
+
+sudo docker container ls
+sudo docker rm ca
+sudo docker rmi rollrat/ca:0.1
+```
