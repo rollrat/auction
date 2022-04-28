@@ -19,7 +19,7 @@ function sleep(ms) {
       var x = searchBudongsan.parse_searchBudongsan(v[0]);
       if (x == null)
         break;
-      results.push(x);
+      results = [...results, ...x];
       console.log(i);
     } catch (e) {
       console.log(e);
