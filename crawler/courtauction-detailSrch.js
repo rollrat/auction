@@ -27,6 +27,13 @@ function sleep(ms) {
       var objInfo = detailSrch.parseDetailSrchHtml(e[0]);
       var param = e[1].param;
 
+      objInfo["info"] = {};
+      objInfo["info"]["courtName"] = e[1]['param'][0];
+      objInfo["info"]["eventNumber"] = e[1]['s1'][1];
+      objInfo["info"]["appraisedValue"] = e[1]['s5'][0];
+      objInfo["info"]["minSellingPrice"] = e[1]['s5'][1];
+      objInfo["info"]["saleDate"] = e[1]['s6'][1];
+
       objInfo["header"] = e[1];
 
       console.log(`${++completed}/${dataLen}`);
